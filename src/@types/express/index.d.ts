@@ -5,7 +5,7 @@ declare global {
     interface Request {
       user: {
         isAdm: boolean;
-        emailActive: boolean
+        isVerify: boolean
         isActive: boolean;
         id: string;
       };

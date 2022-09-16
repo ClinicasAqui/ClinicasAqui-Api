@@ -1,54 +1,30 @@
 import AppDataSource from "../../../../data-source";
-import { user } from "../../../../entities";
-import { AppError } from "../../../../errors/AppError";
+import { errorHandler } from "../../../../error/errorHandler"; 
 import { compareSync } from "bcryptjs";
-import { userImages } from "../../../../entities/user_profile/user_images";
-import { userProfile } from "../../../../entities/user_profile";
-import { cloudinaryResponse } from "../../../../interfaces/user/user_profile/user_images";
+import { cloudinaryResponse } from "../../../../interfaces/images"; 
+import { prisma } from "../../../../app";
 
-export const updateUserProfileImageService = async (
+export const updateUserImageService = async (
   userId: string,
   cloudinaryRespo: cloudinaryResponse[] | any
 ): Promise<void> => {
-  const userRepository = AppDataSource.getRepository(user);
-
-  const profileRepository = AppDataSource.getRepository(userProfile);
-
   if (cloudinaryRespo.length === 0) {
-    throw new AppError(400, "invalid required fields");
+    throw new errorHandler(400, "invalid required fields");
   }
 
   if (cloudinaryRespo.length > 1) {
-    throw new AppError(400, "invalid required fields");
+    throw new errorHandler(400, "invalid required fields");
   }
 
-  const findUser = await userRepository.findOne({
-    where: {
-      id: userId,
-    },
-  });
+  const findUser = await prisma.users.findUnique({ where: { id : userId } });
 
   if (!findUser) {
-    throw new AppError(400, "user not found");
+    throw new errorHandler(400, "user not found");
   }
 
-  const findProfile = await profileRepository.findOne({
-    where: {
-      id: findUser?.profile?.id,
-    },
-  });
+  const url : string = cloudinaryRespo[0].url;
 
-  if (!findProfile) {
-    throw new AppError(404, "required other profile fields first");
-  }
-
-  const url = cloudinaryRespo[0].url;
-
-  const newImage = profileRepository.update(findProfile.id, {
-    profileImage: url,
-  });
-
-  await profileRepository.save({ id: findProfile.id, profileImage: url });
+  const newImage = await prisma.users.update({where : { id : userId}, data : {avatar : url}})
 
   return;
 };

@@ -4,11 +4,10 @@ import AppDataSource from "../../data-source";
 import { PrismaClient, Prisma } from '@prisma/client'
 import { errorHandler } from "../../error/errorHandler";
 import { IUserSession } from "../../interfaces/auth";
-
+import { prisma } from "../../app";
 
 
 export const loginService = async ({ email, password }: IUserSession) => {
-  const prisma = new PrismaClient()
   
   const findUser = await prisma.users.findUnique({where : {email}})
 
@@ -21,7 +20,7 @@ export const loginService = async ({ email, password }: IUserSession) => {
     throw new errorHandler(403, "Email or Password not match");
   }
 
-  if (!findUser.emailActive) {
+  if (!findUser.isVerify) {
     throw new errorHandler(403, "Validate email is requered");
   }
 
@@ -32,7 +31,7 @@ export const loginService = async ({ email, password }: IUserSession) => {
   const token = jwt.sign(
     {
       isAdm: findUser.isAdm,
-      emailActive: findUser.emailActive,
+      emailActive: findUser.isVerify,
       isActive: findUser.isActive,
       id: findUser.id,
     },

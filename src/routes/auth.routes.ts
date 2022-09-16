@@ -3,19 +3,19 @@ import { loginController } from "../controllers/auth/login.controller";
 import { schemasMiddleware } from "../middlewares/schema/schema.middleware";
 import { loginSchema } from "../schemas/auth/login.schema";
 
-const authRouth = Router();
+const authRoutes = Router();
 
-authRouth.post(
+authRoutes.post(
   "/login",
   schemasMiddleware(loginSchema),
   loginController
 );
 
-authRouth.post(
+authRoutes.post(
   "/clinic",
   schemasMiddleware(loginSchema),
   loginController
 );
 
 
-export default authRouth;
+export default authRoutes;

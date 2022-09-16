@@ -5,6 +5,7 @@ import { ICreateUser } from "../../../interfaces/admin/createUser";
 import { hash } from "bcryptjs";
 import { htmlBody } from "../../../html";
 import sendEmail from "../../../utils/nodemailer.util";
+import { prisma } from "../../../app";
 
 export const createUserService = async ({
   name,
@@ -14,7 +15,6 @@ export const createUserService = async ({
   age,
   avatar,
 }: ICreateUser) : Promise<Users> => {
-  const prisma = new PrismaClient();
 
   const findUserEmail = await prisma.users.findUnique({ where: { email } });
 
@@ -58,7 +58,7 @@ export const createUserService = async ({
   const hashedPassword = await hash(password, 10);
 
   const createUSer = await prisma.users.create({
-    data: { name, email, password: hashedPassword, cpf, age, avatar, isActive : false, isAdm: false, isVerify: false },
+    data: { name, email, password: hashedPassword, cpf, age, avatar, isActive : true, isAdm: false, isVerify: false },
   });
 
   const token = jwt.sign(

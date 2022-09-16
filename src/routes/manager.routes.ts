@@ -4,19 +4,12 @@ import { loginController } from "../controllers/auth/login.controller";
 import { schemasMiddleware } from "../middlewares/schema/schema.middleware";
 import { createAdmSchema } from "../schemas/admin/createAdm.schema";
 
-const managerRouth = Router();
+const managerRoutes = Router();
 
-managerRouth.post(
+managerRoutes.post(
   "/new",
   schemasMiddleware(createAdmSchema),
   createAdmController
 );
 
-managerRouth.post(
-  "/clinic",
-
-  loginController
-);
-
-
-export default managerRouth;
+export default managerRoutes;

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { deleteUserProfileImageService } from "../../../../services/user/user_profile/profileImage/deleteImage.service";
+import { deleteUserImageService } from "../../../../services/user/self/profileImage/deleteImage.service";
 
-export const deleteUserProfileImageController = async (req: Request, res: Response) => {
-  const userId = req.idParams.id
+export const deleteUserImageController = async (req: Request, res: Response) => {
+  const userId = req.user.id
   
-  await deleteUserProfileImageService(userId)
+  await deleteUserImageService(userId)
 
   return res.status(204).json();
 };

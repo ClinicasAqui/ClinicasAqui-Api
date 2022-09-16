@@ -4,7 +4,8 @@ import AppDataSource from "../../data-source";
 import { PrismaClient, Prisma, Users } from "@prisma/client";
 import { errorHandler } from "../../error/errorHandler";
 import { IUserSession } from "../../interfaces/auth";
-import { ICreateUser } from "../../interfaces/admin/createUser"; 
+import { ICreateUser } from "../../interfaces/admin/createUser";
+import { prisma } from "../../app";
 
 export const createAdmService = async ({
   name,
@@ -14,8 +15,6 @@ export const createAdmService = async ({
   age,
   avatar,
 }: ICreateUser) : Promise<Users> => {
-  const prisma = new PrismaClient();
-
   const findUserEmail = await prisma.users.findUnique({ where: { email } });
 
   if (findUserEmail) {
