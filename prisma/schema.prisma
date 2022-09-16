@@ -1,0 +1,338 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id String @id @default(uuid())
+
+  category String @unique
+
+  clinics Clinics[]
+
+  @@map("category")
+}
+
+model Corporation {
+  id String @id @default(uuid())
+
+  corporation String @unique
+
+  clinics Clinics[]
+
+  @@map("corporation")
+}
+
+model Insurance {
+    id String @id @default(uuid())
+
+    insurance String @unique
+
+    healtPlans HealthPlan[]
+
+    clinics Clinics[]
+
+    @@map("insurance")
+}
+
+model HealthPlan {
+  id String @id @default(uuid())
+
+  healtPlan String @unique
+
+  clinics Clinics[]
+
+  users Users[]
+
+  insurance Insurance @relation(fields: [insuranceName], references: [insurance], onDelete: SetNull)
+
+  insuranceName String
+  
+  @@map("health_plan")
+}
+
+model Treatments {
+  id String @id @default(uuid())
+
+  treatment String
+
+  clinics Clinics[]
+
+  @@map("treatments")
+}
+
+model Clinics {
+  id String @id @default(uuid())
+
+  name String @unique
+
+  cnpj Int? @unique
+
+  authenticated Boolean?
+
+  descripition String?
+
+  avatar String?
+
+  phone String?
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt @default(now())
+
+  clinicAddress ClinicAddress?  
+
+  clinicImages ClinicImages[]
+
+  clinicUsers ClinicUsers[]
+
+  clinicRating ClinicRating[]
+
+  treatments Treatments[]
+
+  ratingReply RatingReply[]
+
+  category Category? @relation(fields: [CategoryId], references: [id], onDelete: SetNull)
+
+  CategoryId String?
+
+  corporation Corporation? @relation(fields: [CorporationName], references: [corporation], onDelete: SetNull)
+
+  CorporationName String?
+
+  insurance Insurance[] 
+
+  healthPlan HealthPlan[]
+
+  @@map("clinics")
+}
+
+model ClinicAddress {
+  id String @id @default(uuid())
+
+  country String?
+
+  city String?
+
+  state String?
+
+  zipCode String?
+
+  distict String?
+
+  way String?
+
+  number String?
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt @default(now())
+
+  clinics Clinics @relation(fields: [ClinicsName], references: [name], onDelete: SetNull)
+
+  ClinicsName String @unique
+
+  @@map("clinic_address")
+}
+
+model ClinicImages {
+  id String @id @default(uuid())
+
+  link String
+
+  width String
+
+  height String
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt @default(now())
+
+  clinics Clinics @relation(fields: [clinicName], references: [name], onDelete: SetNull)
+
+  clinicName String
+
+  @@map("clinic_images")
+}
+
+model ClinicUsers {
+  id String @id @default(uuid())
+
+  name String 
+
+  email String @unique
+
+  password String
+
+  cpf String @unique
+ 
+  isVerify Boolean
+  
+  isActive Boolean
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt @default(now())
+
+  clinicUserSessions ClinicUserSessions[]
+
+  clinic Clinics @relation(fields: [clinicName], references: [name], onDelete: SetNull)
+
+  clinicName String
+
+  @@map("clinic_users")
+}
+
+model ClinicUserSessions {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+
+  clinics ClinicUsers @relation(fields: [clinicUserSessionsId], references: [id], onDelete: SetNull)
+
+  clinicUserSessionsId String @unique
+
+  @@map("clinic_user_sessions")
+}
+
+
+model ClinicRating {
+  id String @id @default(uuid())
+  
+  user String?
+
+  userName String?
+
+  userAvatar String?
+
+  title String?
+
+  message String
+
+  rating String
+
+  createdAt DateTime  @default(now())
+
+  updatedAt DateTime @updatedAt @default(now())
+
+  deleted Boolean @default(false)
+
+  ratingReply RatingReply[]
+  
+  clinics Clinics @relation(fields: [ClinicsName], references: [name], onDelete: SetNull)
+
+  ClinicsName String
+
+  users Users @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  userId String
+
+  @@map("clinic_rating")
+  }
+
+model RatingReply {
+  id String @id @default(uuid())
+
+  message String?
+
+  type String?
+
+  user Users? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  userId String?
+
+  clinic Clinics? @relation(fields: [ClinicsName], references: [name], onDelete: SetNull)
+
+  ClinicsName String?
+
+  createdAt DateTime  @default(now())
+
+  updatedAt DateTime @updatedAt @default(now())
+
+  clinics ClinicRating @relation(fields: [ClinicRatingId], references: [id], onDelete: SetNull)
+
+  ClinicRatingId String
+
+  @@map("rating_reply")
+  }
+
+model Users {
+  id String @id @default(uuid())
+
+  name String
+
+  email String @unique
+
+  password String
+
+  age Int
+
+  cpf String? @unique
+
+  avatar String?
+
+  healtPlan HealthPlan? @relation(fields: [healthPlanId], references: [id], onDelete: SetNull)
+
+  healthPlanId String? @unique
+
+  isActive Boolean
+
+  isAdm Boolean
+
+  isVerify Boolean
+
+  createdAt DateTime  @default(now())
+
+  updatedAt DateTime @updatedAt @default(now())
+   
+  userAddress UserAddress?
+
+  sessions UserSessions[]
+
+  ratings ClinicRating[]
+
+  ratingReply RatingReply[]
+
+  @@map("users")
+}
+
+model UserAddress {
+  id String @id @default(uuid())
+
+  country String
+
+  city String
+
+  state String
+
+  zipCode String?
+
+  number String?
+  
+  distric String?
+
+  clinics Users @relation(fields: [UserId], references: [id], onDelete: SetNull)
+
+  UserId String @unique
+
+  @@map("user_address")
+}
+
+model UserSessions {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+
+  user Users @relation(fields: [UserId], references: [id], onDelete: SetNull)
+
+  UserId String
+
+  @@map("user_sessions")
+}
