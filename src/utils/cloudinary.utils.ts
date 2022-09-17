@@ -11,7 +11,7 @@ const CLOUDINARY_URL = cloudinary.config({
 
 export const upload = multer({
   storage: multer.diskStorage({
-    destination: "upload/htttinder",
+    destination: "upload/clinicasaquiusers",
     filename: (request, file, callback) => {
       const filename = `${file.originalname}`;
 

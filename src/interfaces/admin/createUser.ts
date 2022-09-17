@@ -6,3 +6,27 @@ export interface ICreateUser {
     avatar?: string
     age: number
 }
+
+export interface ICreateCLinic {
+    name : string
+    cnpj? : string
+    authenticated? : boolean
+    descripition? : string
+    phone? : string
+    clinicAddress? : IUpdateClinicAddress
+    CorporationName? : string
+    treatments? : string[]
+    insurance? : string[]
+    healthPlan? : string[]
+
+}
+
+export interface IUpdateClinicAddress {
+    country : string
+    city : string
+    state : string
+    zipCode : string
+    distict : string
+    way : string
+    number : string
+}

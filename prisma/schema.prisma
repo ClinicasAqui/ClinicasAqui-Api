@@ -73,7 +73,7 @@ model Clinics {
 
   name String @unique
 
-  cnpj Int? @unique
+  cnpj String?
 
   authenticated Boolean?
 
@@ -99,9 +99,7 @@ model Clinics {
 
   ratingReply RatingReply[]
 
-  category Category? @relation(fields: [CategoryId], references: [id], onDelete: SetNull)
-
-  CategoryId String?
+  category Category[]
 
   corporation Corporation? @relation(fields: [CorporationName], references: [corporation], onDelete: SetNull)
 
@@ -280,7 +278,7 @@ model Users {
 
   healtPlan HealthPlan? @relation(fields: [healthPlanId], references: [id], onDelete: SetNull)
 
-  healthPlanId String? @unique
+  healthPlanId String?
 
   isActive Boolean
 
@@ -327,6 +325,8 @@ model UserAddress {
 
 model UserSessions {
   id String @id @default(uuid())
+
+  ip String?
 
   createdAt DateTime @default(now())
 
