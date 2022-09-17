@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { errorHandler } from "../../error/errorHandler";
 
-export const verifyAuthMiddleware = async (
+export const verifyAdmAuthMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -10,7 +10,7 @@ export const verifyAuthMiddleware = async (
   let token = req.headers.authorization;
 
   if (!token) {
-    throw new errorHandler(401, "Token invalid");
+    throw new errorHandler(401, "to access this route you need to send a token");
   }
 
   token = token.split(" ")[1];
@@ -28,6 +28,12 @@ export const verifyAuthMiddleware = async (
         isAdm: decoded.isAdm,
         isVerify : decoded.isVerify
       };
+      if (!req.user.isAdm) {
+        throw new errorHandler(401, "missing authorization permissions");
+      }
+      if (!req.user.isActive) {
+        throw new errorHandler(401, "user is not Active");
+      }
       next();
     }
   );

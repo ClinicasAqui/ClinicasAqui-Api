@@ -43,14 +43,13 @@ CREATE TABLE "treatments" (
 CREATE TABLE "clinics" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "cnpj" INTEGER,
+    "cnpj" TEXT,
     "authenticated" BOOLEAN,
     "descripition" TEXT,
     "avatar" TEXT,
     "phone" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "CategoryId" TEXT,
     "CorporationName" TEXT,
 
     CONSTRAINT "clinics_pkey" PRIMARY KEY ("id")
@@ -179,10 +178,17 @@ CREATE TABLE "user_address" (
 -- CreateTable
 CREATE TABLE "user_sessions" (
     "id" TEXT NOT NULL,
+    "ip" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "UserId" TEXT NOT NULL,
 
     CONSTRAINT "user_sessions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_CategoryToClinics" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
 );
 
 -- CreateTable
@@ -219,9 +225,6 @@ CREATE UNIQUE INDEX "health_plan_healtPlan_key" ON "health_plan"("healtPlan");
 CREATE UNIQUE INDEX "clinics_name_key" ON "clinics"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "clinics_cnpj_key" ON "clinics"("cnpj");
-
--- CreateIndex
 CREATE UNIQUE INDEX "clinic_address_ClinicsName_key" ON "clinic_address"("ClinicsName");
 
 -- CreateIndex
@@ -240,10 +243,13 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE UNIQUE INDEX "users_cpf_key" ON "users"("cpf");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_healthPlanId_key" ON "users"("healthPlanId");
+CREATE UNIQUE INDEX "user_address_UserId_key" ON "user_address"("UserId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_address_UserId_key" ON "user_address"("UserId");
+CREATE UNIQUE INDEX "_CategoryToClinics_AB_unique" ON "_CategoryToClinics"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_CategoryToClinics_B_index" ON "_CategoryToClinics"("B");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_ClinicsToTreatments_AB_unique" ON "_ClinicsToTreatments"("A", "B");
@@ -265,9 +271,6 @@ CREATE INDEX "_ClinicsToHealthPlan_B_index" ON "_ClinicsToHealthPlan"("B");
 
 -- AddForeignKey
 ALTER TABLE "health_plan" ADD CONSTRAINT "health_plan_insuranceName_fkey" FOREIGN KEY ("insuranceName") REFERENCES "insurance"("insurance") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "clinics" ADD CONSTRAINT "clinics_CategoryId_fkey" FOREIGN KEY ("CategoryId") REFERENCES "category"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "clinics" ADD CONSTRAINT "clinics_CorporationName_fkey" FOREIGN KEY ("CorporationName") REFERENCES "corporation"("corporation") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -307,6 +310,12 @@ ALTER TABLE "user_address" ADD CONSTRAINT "user_address_UserId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "user_sessions" ADD CONSTRAINT "user_sessions_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_CategoryToClinics" ADD CONSTRAINT "_CategoryToClinics_A_fkey" FOREIGN KEY ("A") REFERENCES "category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_CategoryToClinics" ADD CONSTRAINT "_CategoryToClinics_B_fkey" FOREIGN KEY ("B") REFERENCES "clinics"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ClinicsToTreatments" ADD CONSTRAINT "_ClinicsToTreatments_A_fkey" FOREIGN KEY ("A") REFERENCES "clinics"("id") ON DELETE CASCADE ON UPDATE CASCADE;
