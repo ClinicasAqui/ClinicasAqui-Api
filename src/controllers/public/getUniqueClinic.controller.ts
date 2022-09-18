@@ -1,13 +1,11 @@
 import { Request, Response } from "express";
-import getClinicsService from "../../services/public/getClinics.service";
+import { errorHandler } from "../../error/errorHandler";
 import getClinicUniqueService from "../../services/public/getUniqueClinic.service";
 
-const getUniqueClinicController = async (res: Response, req: Request) => {
+export const getUniqueClinicController = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const clinic = await getClinicUniqueService({ id });
 
-  return res.status(200).json(clinic);
+  return res.status(200).json({clinic});
 };
-
-export default getUniqueClinicController

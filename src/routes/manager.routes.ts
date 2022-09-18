@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { createAdmController } from "../controllers/admin/create/createAdm.controller";
-import { loginController } from "../controllers/auth/login.controller";
 import { admSecretKeyMiddleware } from "../middlewares/admin/admSecretKey.middleware";
 import { verifyAdmAuthMiddleware } from "../middlewares/admin/verifyAdmAuth.middleware";
 import { schemasMiddleware } from "../middlewares/schema/schema.middleware";

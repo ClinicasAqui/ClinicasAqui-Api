@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { errorHandler } from "../../error/errorHandler";
 import { loginService } from "../../services/auth/login.service";
 
 
