@@ -1,12 +1,6 @@
-import { compare, compareSync, hash } from "bcryptjs";
-import AppDataSource from "../../data-source";
-import { PrismaClient, Prisma, Users } from "@prisma/client";
 import { errorHandler } from "../../error/errorHandler";
-import { IUserSession } from "../../interfaces/auth";
 import { ICreateCLinic } from "../../interfaces/admin/createUser";
 import { prisma } from "../../app";
-import { schemasMiddleware } from "../../middlewares/schema/schema.middleware";
-import { updateClinicAddressSchema } from "../../schemas/admin/createClinic.schema";
 
 export const admCreateClinicService = async ({
   name,

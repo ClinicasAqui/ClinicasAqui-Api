@@ -195,7 +195,7 @@ model ClinicUserSessions {
 
   clinics ClinicUsers @relation(fields: [clinicUserSessionsId], references: [id], onDelete: SetNull)
 
-  clinicUserSessionsId String 
+  clinicUserSessionsId String
 
   @@map("clinic_user_sessions")
 }

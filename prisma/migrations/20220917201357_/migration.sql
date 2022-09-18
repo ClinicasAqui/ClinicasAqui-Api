@@ -222,6 +222,9 @@ CREATE UNIQUE INDEX "insurance_insurance_key" ON "insurance"("insurance");
 CREATE UNIQUE INDEX "health_plan_healtPlan_key" ON "health_plan"("healtPlan");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "treatments_treatment_key" ON "treatments"("treatment");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "clinics_name_key" ON "clinics"("name");
 
 -- CreateIndex
@@ -232,9 +235,6 @@ CREATE UNIQUE INDEX "clinic_users_email_key" ON "clinic_users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "clinic_users_cpf_key" ON "clinic_users"("cpf");
-
--- CreateIndex
-CREATE UNIQUE INDEX "clinic_user_sessions_clinicUserSessionsId_key" ON "clinic_user_sessions"("clinicUserSessionsId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
