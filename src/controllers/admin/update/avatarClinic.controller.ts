@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
-import { updateUserProfileImageService } from "../../../../services/user/user_profile/profileImage/updateUserProfile.service";
+import { updateClinicAvatarService } from "../../../services/admin/update/updateClinicAvatarService.service";
 
-export const updateUserProfileImageController = async (
+export const updateClinicAvatarController = async (
   req: Request,
   res: Response
 ) => {
-  const userId = req.idParams.id;
+  const clinicId = req.params.id;
 
   const cloudinaryRespo: any = [];
 
@@ -18,7 +18,7 @@ export const updateUserProfileImageController = async (
     const upload = await cloudinary.uploader.upload(
       file!.path,
       {
-        folder: "htttinder"
+        folder: "clinicasaqui-users"
       },
       
       (error: any, result: any) => result
@@ -31,7 +31,7 @@ export const updateUserProfileImageController = async (
     cloudinaryRespo.push(upload);
   }
 
-  const message = await updateUserProfileImageService(userId, cloudinaryRespo);
+  const message = await updateClinicAvatarService(clinicId, cloudinaryRespo);
   
   return res.status(201).json({ message : "profile image update successfully" });
 };

@@ -4,12 +4,10 @@ import AppDataSource from "../../data-source";
 import { PrismaClient, Prisma } from '@prisma/client'
 import { errorHandler } from "../../error/errorHandler";
 import { IUserSession } from "../../interfaces/auth";
-
+import { prisma } from "../../app";
 
 
 export const loginClinicService = async ({ email, password }: IUserSession) => {
-  const prisma = new PrismaClient()
-  
   const findClinicUser = await prisma.clinicUsers.findUnique({where : {email}})
 
   if (!findClinicUser) {
@@ -21,7 +19,7 @@ export const loginClinicService = async ({ email, password }: IUserSession) => {
     throw new errorHandler(403, "Email or Password not match");
   }
 
-  if (!findClinicUser.emailActive) {
+  if (!findClinicUser.isVerify) {
     throw new errorHandler(403, "Validate email is requered");
   }
 
@@ -37,7 +35,7 @@ export const loginClinicService = async ({ email, password }: IUserSession) => {
 
   const token = jwt.sign(
     {
-      emailActive: findClinicUser.emailActive,
+      emailActive: findClinicUser.isVerify,
       isActive: findClinicUser.isActive,
       id: findClinicUser.id,
       clinic: findClinicUser.clinicName,

@@ -2,7 +2,7 @@ import * as yup from "yup";
 import { SchemaOf } from "yup";
 import { ICreateUser } from "../../interfaces/admin/createUser";
 
-export const createAdmSchema: SchemaOf<ICreateUser> = yup.object().shape({
+export const createUserSchema: SchemaOf<ICreateUser> = yup.object().shape({
   name: yup.string().default("name must be a string").required("name is required"),
   email: yup.string().default("email must be a string").required("email is required").email("must be a valid email"),
   password: yup.string().default("password must be a string").matches(

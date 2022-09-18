@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 import { PrismaClient, Prisma, Users } from "@prisma/client";
-import { errorHandler } from "../../../error/errorHandler";
-import { ICreateUser } from "../../../interfaces/admin/createUser"; 
+import { errorHandler } from "../../../../error/errorHandler";
+import { ICreateUser } from "../../../../interfaces/admin/createUser";
 import { hash } from "bcryptjs";
-import { htmlBody } from "../../../html";
-import sendEmail from "../../../utils/nodemailer.util";
+import { htmlBody } from "../../../../html";
+import sendEmail from "../../../../utils/nodemailer.util";
+import { prisma } from "../../../../app";
 
 export const createUserService = async ({
   name,
@@ -13,9 +14,7 @@ export const createUserService = async ({
   cpf,
   age,
   avatar,
-}: ICreateUser) : Promise<Users> => {
-  const prisma = new PrismaClient();
-
+}: ICreateUser) => {
   const findUserEmail = await prisma.users.findUnique({ where: { email } });
 
   if (findUserEmail) {
@@ -58,7 +57,17 @@ export const createUserService = async ({
   const hashedPassword = await hash(password, 10);
 
   const createUSer = await prisma.users.create({
-    data: { name, email, password: hashedPassword, cpf, age, avatar, isActive : false, isAdm: false, isVerify: false },
+    data: {
+      name,
+      email,
+      password: hashedPassword,
+      cpf,
+      age,
+      avatar,
+      isActive: true,
+      isAdm: false,
+      isVerify: false,
+    },
   });
 
   const token = jwt.sign(
@@ -68,11 +77,19 @@ export const createUserService = async ({
     process.env.SECRET_KEY as string,
     {
       subject: createUSer.id,
-      expiresIn: "24h",
+      expiresIn: "168h",
     }
   );
   const html = htmlBody(token, "Click on the button to activate you account!");
   sendEmail({ to: email, subject: "Confirm your email", html });
 
-  return createUSer
+  return {
+    id: createUSer.id,
+    name: createUSer.name,
+    email: createUSer.email,
+    age: createUSer.age,
+    cpf: createUSer.cpf,
+    healthPlanName: createUSer.healthPlanName,
+    createdAt: createUSer.createdAt,
+  };
 };
