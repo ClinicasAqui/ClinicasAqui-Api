@@ -89,7 +89,7 @@ export const createUserService = async ({
     email: createUSer.email,
     age: createUSer.age,
     cpf: createUSer.cpf,
-    healthPlanId: createUSer.healthPlanId,
+    healthPlanName: createUSer.healthPlanName,
     createdAt: createUSer.createdAt,
   };
 };

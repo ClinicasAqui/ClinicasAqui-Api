@@ -7,7 +7,7 @@ import { schemasMiddleware } from "../middlewares/schema/schema.middleware";
 import { createUserSchema } from "../schemas/user/createUser.schema";
 import { admCreateUserController } from "../controllers/admin/createUser.controller";
 import { admCreateClinicController } from "../controllers/admin/createClinic.controller";
-import { createClinicSchema } from "../schemas/admin/createClinic.schema";
+//import { createClinicSchema } from "../schemas/admin/createClinic.schema";
 
 const managerRoutes = Router();
 
@@ -28,7 +28,6 @@ managerRoutes.post(
 managerRoutes.post(
   "/clinic/new",
   verifyAdmAuthMiddleware,
-  schemasMiddleware(createClinicSchema),
   admCreateClinicController
 );
 
