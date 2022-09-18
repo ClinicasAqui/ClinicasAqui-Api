@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.routes";
 import managerRoutes from "./routes/manager.routes";
 import userRoutes from "./routes/user.routes";
 import publicRoutes from "./routes/public.routes";
+import commentsRoutes from "./routes/comments.routes";
 
 export const prisma = new PrismaClient()
 
@@ -21,6 +22,8 @@ app.use("/manager", managerRoutes)
 app.use("/public", publicRoutes)
 
 app.use("/user", userRoutes)
+
+app.use("/comments", commentsRoutes)
 
 
 app.use(errorMiddleware)

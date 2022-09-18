@@ -7,6 +7,7 @@ export const ratingUserService = async ({
   message,
   rating,
   clinicId,
+  userId,
 }: ICreateReplyUser) => {
   const findClinic = await prisma.clinics.findUnique({
     where: { id: clinicId },
@@ -17,11 +18,11 @@ export const ratingUserService = async ({
   }
 
   const findUser = await prisma.users.findUnique({
-    where: { id: clinicId },
+    where: { id: userId },
   });
 
   if (!findUser) {
-    throw new errorHandler(400, "clinic not found");
+    throw new errorHandler(400, "user not found");
   }
 
   const newReply = await prisma.clinicRating.create({
@@ -40,5 +41,5 @@ export const ratingUserService = async ({
     data: { ratingId: newReply.id, userId: findUser.id },
   });
 
-  return
+  return;
 };
