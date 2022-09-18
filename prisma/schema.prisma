@@ -15,9 +15,21 @@ model Category {
 
   category String @unique
 
-  clinics Clinics[]
+  clinics CategoriesOnClinics[]
 
   @@map("category")
+}
+
+model CategoriesOnClinics {
+  category Category @relation(fields: [categoryName], references: [category])
+  categoryName String 
+
+  clinic Clinics @relation(fields: [clinicName], references: [name])
+  clinicName String
+
+  createdAt DateTime @default(now())
+
+  @@id([categoryName, clinicName])
 }
 
 model Corporation {
@@ -35,19 +47,31 @@ model Insurance {
 
     insurance String @unique
 
-    healtPlans HealthPlan[]
+    healthPlans HealthPlan[]
 
-    clinics Clinics[]
+    clinics InsurancesOnClinics[]
 
     @@map("insurance")
+}
+
+model InsurancesOnClinics {
+  category Insurance @relation(fields: [insuranceName], references: [insurance])
+  insuranceName String 
+
+  clinic Clinics @relation(fields: [clinicName], references: [name])
+  clinicName String
+
+  assignedAt DateTime @default(now())
+
+  @@id([insuranceName, clinicName])
 }
 
 model HealthPlan {
   id String @id @default(uuid())
 
-  healtPlan String @unique
+  healthPlan String @unique
 
-  clinics Clinics[]
+  clinics HealthPlanOnClinics[]
 
   users Users[]
 
@@ -58,14 +82,38 @@ model HealthPlan {
   @@map("health_plan")
 }
 
+model HealthPlanOnClinics {
+  healthPlan HealthPlan @relation(fields: [healthPlanName], references: [healthPlan])
+  healthPlanName String 
+
+  clinic Clinics @relation(fields: [clinicName], references: [name])
+  clinicName String
+
+  assignedAt DateTime @default(now())
+
+  @@id([healthPlanName, clinicName])
+}
+
 model Treatments {
   id String @id @default(uuid())
 
-  treatment String
+  treatment String @unique
 
-  clinics Clinics[]
+  clinics TreatmentsOnClinics[]
 
   @@map("treatments")
+}
+
+model TreatmentsOnClinics {
+  category Treatments @relation(fields: [treatmentsName], references: [treatment])
+  treatmentsName String 
+
+  clinic Clinics @relation(fields: [clinicName], references: [name])
+  clinicName String
+
+  assignedAt DateTime @default(now())
+
+  @@id([treatmentsName, clinicName])
 }
 
 model Clinics {
@@ -95,19 +143,19 @@ model Clinics {
 
   clinicRating ClinicRating[]
 
-  treatments Treatments[]
+  treatments TreatmentsOnClinics[]
 
   ratingReply RatingReply[]
 
-  category Category[]
+  category CategoriesOnClinics[]
 
   corporation Corporation? @relation(fields: [CorporationName], references: [corporation], onDelete: SetNull)
 
   CorporationName String?
 
-  insurance Insurance[] 
+  insurance InsurancesOnClinics[] 
 
-  healthPlan HealthPlan[]
+  healthPlan HealthPlanOnClinics[]
 
   @@map("clinics")
 }
@@ -195,11 +243,10 @@ model ClinicUserSessions {
 
   clinics ClinicUsers @relation(fields: [clinicUserSessionsId], references: [id], onDelete: SetNull)
 
-  clinicUserSessionsId String @unique
+  clinicUserSessionsId String
 
   @@map("clinic_user_sessions")
 }
-
 
 model ClinicRating {
   id String @id @default(uuid())
@@ -228,9 +275,7 @@ model ClinicRating {
 
   ClinicsName String
 
-  users Users @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-  userId String
+  users ClinicRatingOnUser[]
 
   @@map("clinic_rating")
   }
@@ -276,9 +321,9 @@ model Users {
 
   avatar String?
 
-  healtPlan HealthPlan? @relation(fields: [healthPlanId], references: [id], onDelete: SetNull)
+  healthPlan HealthPlan? @relation(fields: [healthPlanName], references: [healthPlan], onDelete: SetNull)
 
-  healthPlanId String?
+  healthPlanName String?
 
   isActive Boolean
 
@@ -294,11 +339,21 @@ model Users {
 
   sessions UserSessions[]
 
-  ratings ClinicRating[]
+  ratings ClinicRatingOnUser[]
 
   ratingReply RatingReply[]
 
   @@map("users")
+}
+
+model ClinicRatingOnUser {
+  user Users @relation(fields: [userId], references: [id])
+  userId String
+
+  rating ClinicRating @relation(fields: [ratingId], references: [id])
+  ratingId String
+
+  @@id([userId, ratingId])
 }
 
 model UserAddress {

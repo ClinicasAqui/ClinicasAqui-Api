@@ -16,9 +16,9 @@ export interface ICreateCLinic {
     clinicAddress? : IUpdateClinicAddress
     CorporationName? : string
     treatments? : string[]
-    insurance? : string[]
-    healthPlan? : string[]
-
+    insurances? : string[]
+    healthPlans? : string[]
+    categories? : string[]
 }
 
 export interface IUpdateClinicAddress {

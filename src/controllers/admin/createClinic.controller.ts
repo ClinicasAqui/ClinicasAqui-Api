@@ -15,8 +15,9 @@ export const admCreateClinicController = async (
     clinicAddress,
     CorporationName,
     treatments,
-    insurance,
-    healthPlan,
+    insurances,
+    healthPlans,
+    categories,
   }: ICreateCLinic = req.body;
 
   const message = await admCreateClinicService({
@@ -28,8 +29,9 @@ export const admCreateClinicController = async (
     clinicAddress,
     CorporationName,
     treatments,
-    insurance,
-    healthPlan,
+    insurances,
+    healthPlans,
+    categories,
   });
 
   return res.status(201).json({ message });
