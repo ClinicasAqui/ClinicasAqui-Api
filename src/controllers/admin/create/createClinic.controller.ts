@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ICreateCLinic } from "../../interfaces/admin/createUser";
-import { admCreateClinicService } from "../../services/admin/admCreateClinic.service";
+import { ICreateCLinic } from "../../../interfaces/admin/createUser";
+import { admCreateClinicService } from "../../../services/admin/create/admCreateClinic.service";
 
 export const admCreateClinicController = async (
   req: Request,

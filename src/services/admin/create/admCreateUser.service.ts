@@ -1,13 +1,12 @@
 import jwt from "jsonwebtoken";
 import { compare, compareSync, hash } from "bcryptjs";
-import AppDataSource from "../../data-source";
-import { PrismaClient, Prisma, Users } from "@prisma/client";
-import { errorHandler } from "../../error/errorHandler";
-import { IUserSession } from "../../interfaces/auth";
-import { ICreateUser } from "../../interfaces/admin/createUser";
-import { prisma } from "../../app";
+import { PrismaClient, Users } from "@prisma/client";
+import { errorHandler } from "../../../error/errorHandler";
+import { IUserSession } from "../../../interfaces/auth";
+import { ICreateUser } from "../../../interfaces/admin/createUser";
+import { prisma } from "../../../app";
 
-export const createAdmService = async ({
+export const admCreateUserService = async ({
   name,
   email,
   password,
@@ -21,7 +20,7 @@ export const createAdmService = async ({
     throw new errorHandler(409, "this email is already registered");
   }
 
-  const findUserCpf = await prisma.users.findUnique({ where: { email } });
+  const findUserCpf = await prisma.users.findUnique({ where: { cpf } });
 
   if (findUserCpf) {
     throw new errorHandler(409, "this cpf is already registered");
@@ -57,7 +56,7 @@ export const createAdmService = async ({
   const hashedPassword = await hash(password, 10);
 
   const createAdm = await prisma.users.create({
-    data: { name, email, password:hashedPassword, cpf, age, avatar, isActive : true, isAdm: true, isVerify: true },
+    data: { name, email, password:hashedPassword, cpf, age, avatar, isActive : true, isAdm: false, isVerify: true },
   });
 
   return createAdm

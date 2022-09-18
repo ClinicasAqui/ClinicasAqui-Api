@@ -2,7 +2,7 @@ import { prisma } from "../../app";
 import { errorHandler } from "../../error/errorHandler";
 import { uuid } from "../../interfaces/public";
 
-const getClinicUniqueService = async ({ id }:uuid) => {
+const getUniqueClinicService = async ({ id }:uuid) => {
   const findClinic = await prisma.clinics.findUnique({
     where: { id },
     include: {
@@ -25,4 +25,4 @@ const getClinicUniqueService = async ({ id }:uuid) => {
   return findClinic;
 };
 
-export default getClinicUniqueService;
+export default getUniqueClinicService;

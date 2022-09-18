@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ICreateUser } from "../../interfaces/admin/createUser";
-import { createAdmService } from "../../services/admin/createAdm.service";
+import { ICreateUser } from "../../../interfaces/admin/createUser";
+import { createAdmService } from "../../../services/admin/create/createAdm.service";
 
 
 export const createAdmController = async (req: Request, res: Response) => {

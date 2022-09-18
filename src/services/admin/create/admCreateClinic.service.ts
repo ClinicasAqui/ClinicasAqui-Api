@@ -1,11 +1,7 @@
-import { errorHandler } from "../../error/errorHandler";
-import { ICreateCLinic } from "../../interfaces/admin/createUser";
-import { prisma } from "../../app";
-
-import { schemasMiddleware } from "../../middlewares/schema/schema.middleware";
+import { errorHandler } from "../../../error/errorHandler";
+import { ICreateCLinic } from "../../../interfaces/admin/createUser";
+import { prisma } from "../../../app";
 import { create } from "domain";
-import { threadId } from "worker_threads";
-// import { updateClinicAddressSchema } from "../../schemas/admin/createClinic.schema";
 
 export const admCreateClinicService = async ({
   name,
