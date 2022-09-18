@@ -6,6 +6,10 @@ import { schemasMiddleware } from "../middlewares/schema/schema.middleware";
 import { createUserSchema } from "../schemas/user/createUser.schema";
 import { admCreateUserController } from "../controllers/admin/create/createUser.controller";
 import { admCreateClinicController } from "../controllers/admin/create/createClinic.controller";
+import { verifyUuidParamsMiddleware } from "../middlewares/public/verifyUuidParams.middleware";
+import { upload } from "../utils/cloudinary.utils";
+import { updateClinicAvatarController } from "../controllers/admin/update/avatarClinic.controller";
+import { updateClinicImagesController } from "../controllers/admin/update/imagesClinic.controller";
 //import { createClinicSchema } from "../schemas/admin/createClinic.schema";
 
 const managerRoutes = Router();
@@ -29,5 +33,21 @@ managerRoutes.post(
   verifyAdmAuthMiddleware,
   admCreateClinicController
 );
+
+managerRoutes.patch(
+  "/clinic/avatar/:id",
+  verifyAdmAuthMiddleware,
+  verifyUuidParamsMiddleware,
+  upload.array("image", Infinity),
+  updateClinicAvatarController
+)
+
+managerRoutes.patch(
+  "/clinic/images/:id",
+  verifyAdmAuthMiddleware,
+  verifyUuidParamsMiddleware,
+  upload.array("image", Infinity),
+  updateClinicImagesController
+)
 
 export default managerRoutes;

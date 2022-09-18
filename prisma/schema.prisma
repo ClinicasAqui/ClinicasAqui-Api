@@ -193,9 +193,9 @@ model ClinicImages {
 
   link String
 
-  width String
+  width String?
 
-  height String
+  height String?
 
   createdAt DateTime @default(now())
 

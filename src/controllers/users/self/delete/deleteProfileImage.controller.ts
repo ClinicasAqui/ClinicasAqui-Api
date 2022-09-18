@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { deleteUserImageService } from "../../../../services/user/self/profileImage/deleteImage.service";
+import { deleteUserImageService } from "../../../../services/user/self/delete/deleteImage.service";
 
 export const deleteUserImageController = async (req: Request, res: Response) => {
   const userId = req.user.id

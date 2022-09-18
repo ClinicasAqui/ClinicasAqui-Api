@@ -9,12 +9,14 @@ export const admCreateClinicService = async ({
   authenticated,
   descripition,
   phone,
+  avatar,
   clinicAddress,
   CorporationName,
   treatments,
   insurances,
   healthPlans,
   categories,
+  images,
 }: ICreateCLinic) => {
   const findClinicName = await prisma.clinics.findUnique({ where: { name } });
 
@@ -23,7 +25,7 @@ export const admCreateClinicService = async ({
   }
 
   const newClinic = await prisma.clinics.create({
-    data: { name, cnpj, authenticated, descripition, phone },
+    data: { name, cnpj, authenticated, descripition, phone, avatar },
   });
 
   if (clinicAddress !== undefined) {
@@ -182,6 +184,19 @@ export const admCreateClinicService = async ({
       const connectCategoryClinic = await prisma.categoriesOnClinics.create({
         data: {
           categoryName: findCategoryCreated!.category,
+          clinicName: newClinic.name,
+        },
+      });
+    }
+  }
+
+  if (images !== undefined) {
+    for (let index = 0; index < images.length; index++) {
+      const image = images[index];
+
+      const newImage = await prisma.clinicImages.create({
+        data: {
+          link: image,
           clinicName: newClinic.name,
         },
       });

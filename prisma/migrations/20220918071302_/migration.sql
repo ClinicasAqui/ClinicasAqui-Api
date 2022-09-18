@@ -112,8 +112,8 @@ CREATE TABLE "clinic_address" (
 CREATE TABLE "clinic_images" (
     "id" TEXT NOT NULL,
     "link" TEXT NOT NULL,
-    "width" TEXT NOT NULL,
-    "height" TEXT NOT NULL,
+    "width" TEXT,
+    "height" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "clinicName" TEXT NOT NULL,

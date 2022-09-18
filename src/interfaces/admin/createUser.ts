@@ -13,12 +13,14 @@ export interface ICreateCLinic {
     authenticated? : boolean
     descripition? : string
     phone? : string
+    avatar? : string
     clinicAddress? : IUpdateClinicAddress
     CorporationName? : string
     treatments? : string[]
     insurances? : string[]
     healthPlans? : string[]
     categories? : string[]
+    images? : string[]
 }
 
 export interface IUpdateClinicAddress {
