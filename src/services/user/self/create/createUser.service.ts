@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
 import { PrismaClient, Prisma, Users } from "@prisma/client";
-import { errorHandler } from "../../../error/errorHandler";
-import { ICreateUser } from "../../../interfaces/admin/createUser";
+import { errorHandler } from "../../../../error/errorHandler";
+import { ICreateUser } from "../../../../interfaces/admin/createUser";
 import { hash } from "bcryptjs";
-import { htmlBody } from "../../../html";
-import sendEmail from "../../../utils/nodemailer.util";
-import { prisma } from "../../../app";
+import { htmlBody } from "../../../../html";
+import sendEmail from "../../../../utils/nodemailer.util";
+import { prisma } from "../../../../app";
 
 export const createUserService = async ({
   name,
