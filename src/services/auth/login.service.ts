@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import { compare, compareSync } from "bcryptjs";
 import AppDataSource from "../../data-source";
-import { PrismaClient, Prisma } from '@prisma/client'
 import { errorHandler } from "../../error/errorHandler";
 import { IUserSession } from "../../interfaces/auth";
 import { prisma } from "../../app";
