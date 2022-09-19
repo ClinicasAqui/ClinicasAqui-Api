@@ -153,7 +153,7 @@ CREATE TABLE "clinic_rating" (
     "userName" TEXT,
     "userAvatar" TEXT,
     "title" TEXT,
-    "message" TEXT NOT NULL,
+    "message" TEXT,
     "rating" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
