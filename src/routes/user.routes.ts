@@ -5,10 +5,14 @@ import { updateUserImageController } from "../controllers/users/self/update/upda
 import { verifyAuthMiddleware } from "../middlewares/user/verifyAuthMiddleware.middleware";
 import { imageHeadersMiddleware } from "../middlewares/user/emptyBody.middleware";
 import { upload } from "../utils/cloudinary.utils";
+import { getUsersController } from "../controllers/users/getUsers/getUsers.controller";
+import { verifyAdmAuthMiddleware } from "../middlewares/admin/verifyAdmAuth.middleware";
 
 const userRoutes = Router();
 
 userRoutes.post("", createUSerController);
+
+userRoutes.get("", verifyAuthMiddleware, verifyAdmAuthMiddleware, getUsersController)
 
 userRoutes.patch(
   "/avatar",

@@ -42,7 +42,7 @@ export function htmlBody(
                                         <button style="background-color: #F299B9; border-radius: 10px; border: 0; padding: 1em 2em;  font-family: Arial, sans-serif; font-size: 1.5rem; ">
                                              <!-- precisa redirecionar para pagina com a rota + token -->
                                              
-                                             <a style="text-decoration: none; font-weight: 600; color: #ffffff;" href="${link}${token}" target="_blank">Confirm account</a>
+                                             <a style="text-decoration: none; font-weight: 600; color: #ffffff;" href="https://hospital-nu.vercel.app/emailChecker/${token}" target="_blank">Confirm account</a>
                                         </button>
                                    </td>
                               </tr>
